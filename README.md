@@ -1,6 +1,6 @@
 # st-project-skills
 
-steedos 平台([steedos-platform](https://github.com/steedos/steedos-platform))项目交付 skill 库:目前只覆盖 **需求 → 开发** 两个阶段的可复用流程资产,源自 [os-project-skills](https://github.com/baozhoutao/os-project-skills) 的同名 skill 改造而来。
+steedos 平台([steedos-platform](https://github.com/steedos/steedos-platform))项目交付 skill 库:目前覆盖 **需求 → 开发 → 调度/验收 → 规范横切** 的可复用流程资产,源自 [os-project-skills](https://github.com/baozhoutao/os-project-skills) 的同名 skill 改造而来。
 
 > 定位:**skill 全是给 AI 岗位用的,人只在闸门上消费 skill 的产出物做决策。**
 
@@ -11,13 +11,13 @@ st-project-<阶段标识>-<功能标识>
 ```
 
 - 全小写、连字符分隔,禁大写
-- **阶段标识是封闭集合**(沿用 os-project-skills 的九段划分:pre / req / dev / impl / pilot / pm / std / kb / meta),本库当前只落地 `req` 与 `dev` 两段
+- **阶段标识是封闭集合**(沿用 os-project-skills 的九段划分:pre / req / dev / impl / pilot / pm / std / kb / meta),本库当前落地 `req` / `dev` / `pm` / `std` 四段
 - 功能标识:单个名词,一眼见义
 - 一个 skill 只固化一道工序;TRIGGER(何时用)/ SKIP(何时不用)必须写进 frontmatter description
 
-## Skill 总表(10 个)
+## Skill 总表(15 个)
 
-> 建设状态:全部 **可用(未实战)**——从 os-project-skills 迁移改造,尚未在 steedos 真实项目跑通;「可用 → 已验证」的升级以真实项目跑通为准。
+> 建设状态:全部 **可用(未实战)**——从 os-project-skills 迁移改造,尚未在 steedos 真实项目跑通;「可用 → 已验证」的升级以真实项目跑通为准(pm-case / pm-test 的流程本身在上游 os 项目已实战验证过,steedos 项目上仍按未实战对待)。
 
 ### 需求 `req`
 | skill | 职责 | 防什么错 |
@@ -37,11 +37,28 @@ st-project-<阶段标识>-<功能标识>
 | [st-project-dev-inventory](skills/st-project-dev-inventory/SKILL.md) | 平台配置清单派生:从 steedos 元数据导出对象×字段/权限矩阵/触发器/定时任务/页面/接口全景视图;只派生禁回写 | 配置全景无账可查;手工维护的详细设计漂移成第二真值 |
 | [st-project-dev-review](skills/st-project-dev-review/SKILL.md) | 合并前 AI 独立代码评审:通用质量走内置 `/code-review`,叠加改动面越界等专属核查 | 自主合并链路上无人读代码 |
 
-## 已引用但未收录的 skill(待建)
+### 管理/验收横切 `pm`
+| skill | 职责 | 防什么错 |
+|---|---|---|
+| [st-project-pm-dispatch](skills/st-project-pm-dispatch/SKILL.md) | 批量调度:拉就绪项→并行派发→收报告→看板;单项也按「1 项的批」走 | 串行浪费;吞吐上不去;主会话亲自开发失去隔离 |
+| [st-project-pm-case](skills/st-project-pm-case/SKILL.md) | 验收用例起草:AI 起草→PR→PM merge 即定稿;预期只来自需求,推断显式标记 | 用实现验证实现;AI 理解冒充需求 |
+| [st-project-pm-test](skills/st-project-pm-test/SKILL.md) | PM 验收测试:主 agent 只调度,执行与盲审全部下沉独立子 agent,五态结论 | 边测边下结论;无证据判定;基线污染;重复报 issue |
 
-正文里出现的 `st-project-pre-*` / `st-project-pm-*` / `st-project-std-*` / `st-project-pilot-ops` / `st-project-meta-retro` 尚未迁入本库(它们不属于「需求、开发」两段)。遇到这些引用时:
-- 有对应场景需求了,再从 os-project-skills 迁移改造补入;
-- 迁入前,把引用当"该工序存在但本库暂缺"理解,按引用处描述的意图手工等价执行。
+### 规范横切 `std`
+| skill | 职责 |
+|---|---|
+| [st-project-std-git](skills/st-project-std-git/SKILL.md) | 分支/PR/状态标签流转;绝不动主干 |
+| [st-project-std-evidence](skills/st-project-std-evidence/SKILL.md) | 证据规范:证据三性、截图标准、图链四禁令、证据存放模式、报告可复核 |
+
+## 收录边界:只收需求、开发、测试三段
+
+本库**明确不收**文档类与其他阶段的 skill,遇到正文引用按下表处理:
+
+| 引用到的 skill | 处理 |
+|---|---|
+| `st-project-std-docs`(Word 模板/排版)、`st-project-pm-accept`(验收文档包) | **不收录(文档类)**——引用处涉及交付格式的,按项目自己的文档约定执行,或直接以 markdown 挂 issue 为准 |
+| `st-project-pre-*`(售前)、`st-project-pilot-ops`(试运行) | **不收录(阶段外)**——有需要时再从 os-project-skills 迁移 |
+| `st-project-meta-retro`(经验闭环) | **暂缺(待建)**——迁入前按「两条铁律」第 2 条手工执行 |
 
 ## 平台知识边界
 
