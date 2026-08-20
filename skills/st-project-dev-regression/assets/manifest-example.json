@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "defaults": { "timeout_ms": 300000 },
+  "scenarios": [
+    {
+      "id": "s01-order-create",
+      "name": "销售下单:新建订单后列表可见、金额合计正确",
+      "script": "scripts/acceptance/销售订单.cjs",
+      "enabled": true,
+      "source": "#12",
+      "added": "2026-01-15",
+      "tags": ["订单"]
+    },
+    {
+      "id": "s02-leave-approval",
+      "name": "请假审批:员工提交请假单进入审批,主管批准后状态流转正确",
+      "script": "scripts/regression/s02-leave-approval.cjs",
+      "enabled": true,
+      "source": "#27",
+      "added": "2026-02-02",
+      "timeout_ms": 600000,
+      "tags": ["审批"]
+    },
+    {
+      "id": "s03-monthly-report-export",
+      "name": "报表导出:月度汇总报表可导出且数据非空",
+      "script": "scripts/regression/s03-monthly-report-export.cjs",
+      "enabled": false,
+      "disabled_reason": "报表模块按 #45 重构中,断言基线待 #45 验收后修正(基线登记见 #45)",
+      "source": "#31",
+      "added": "2026-02-10",
+      "tags": ["报表"]
+    }
+  ]
+}
